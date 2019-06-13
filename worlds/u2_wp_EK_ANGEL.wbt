@@ -53,6 +53,8 @@ Robot {
         }
         RotationalMotor {
           name "motor_right"
+          maxVelocity 52.3598
+          maxTorque 0.5649
         }
       ]
       endPoint DEF WHEEL_1 Solid {
@@ -88,6 +90,8 @@ Robot {
         }
         RotationalMotor {
           name "motor_left"
+          maxVelocity 52.3598
+          maxTorque 0.5649
         }
       ]
       endPoint Solid {
