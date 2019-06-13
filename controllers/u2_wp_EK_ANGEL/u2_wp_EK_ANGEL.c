@@ -35,6 +35,7 @@
  //VARIABLES FOR ALL KEYBOARD
    int KEY,x,y;
    float L_key,R_key,new_velocity=VELOCITY;
+   float LW_key,RW_key;
 
 
  int main(int argc, char **argv)
@@ -93,7 +94,7 @@
       encoder1_value=(encoder2_value/(2*PI))*0.15*PI;
       encoder2_value=(encoder2_value/(2*PI))*0.15*PI;
 
-      //printf("lineal velocity for wheel right:%lf \n",encoder2_value);
+      //rintf("lineal velocity for wheel right:%lf \n",encoder2_value);
       //printf("lineal velocity for wheel left:%lf\n",encoder1_value);
 
 
@@ -157,11 +158,12 @@
 
        }
 
+      RW_key=(R_key/(2*PI))*DW*PI;
+     LW_key=(L_key/(2*PI))*DW*PI;
 
-
-      printf("valor rueda derecha = %f \n",R_key);
-      //printf("valor rueda izquierda = %f \n",L_key);
-      //printf("valor key = %i \n",KEY);
+      printf("valor rueda derecha = %f m/s \n",RW_key);
+      printf("valor rueda izquierda = %f m/s \n",LW_key);
+    //printf("valor key = %i \n",KEY);
 
     wb_motor_set_velocity(wheel_right,R_key);
     wb_motor_set_velocity(wheel_left,L_key);

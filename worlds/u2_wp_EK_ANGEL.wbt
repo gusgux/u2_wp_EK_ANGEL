@@ -19,6 +19,9 @@ Robot {
       children [
         DEF ROBOT_BODY Shape {
           appearance PBRAppearance {
+            baseColor 0.9372549019607843 0.1607843137254902 0.1607843137254902
+            roughness 1
+            metalness 0
           }
           geometry DEF G_BODY Box {
             size 0.25 0.07 0.1
@@ -109,6 +112,11 @@ Robot {
     DistanceSensor {
       translation 0.12 0 0
       name "distance_sensor"
+      lookupTable [
+        0 0 0
+        0.03 1000 0
+      ]
+      aperture 0.5235
       resolution 1
     }
   ]
@@ -118,7 +126,7 @@ Robot {
   controller "u2_wp_EK_ANGEL"
 }
 Solid {
-  translation 1.5 0 0
+  translation 22 0 0
   children [
     DEF G_BOX_OB Shape {
       appearance PBRAppearance {
