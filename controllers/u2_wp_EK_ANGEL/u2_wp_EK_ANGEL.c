@@ -23,16 +23,17 @@
   */
  #define TIME_STEP 80
  #define VELOCITY -2
- #define VMAX -52.35
- #define VMED -5.2359
+ #define VMAX -3
+ #define VLOW -.1
  #define PI 3.141592
+ #define DW .15
  /*
   * This is the main program.
   * The arguments of the main function can be specified by the
   * "controllerArgs" field of the Robot node
   */
  //VARIABLES FOR ALL KEYBOARD
-   int KEY;
+   int KEY,x,y;
    float L_key,R_key,new_velocity=VELOCITY;
 
 
@@ -43,7 +44,7 @@
    wb_keyboard_enable(TIME_STEP);
 
    /**WHEEL VARIABLES*/
-   int x;
+
     double ds_value;
     double encoder1_value;
     double encoder2_value;
@@ -86,14 +87,14 @@
 
       ds_value=wb_distance_sensor_get_value(dist_sensor);
       encoder1_value=wb_position_sensor_get_value(encoder_1);
-      x=wb_position_sensor_get_type(encoder_1);
-      encoder2_value=wb_position_sensor_get_value(encoder_2);
-      //printf("Distance sensor:%lf\n",ds_value);
-      encoder1_value=encoder_1;
-      encoder2_value=encoder_2;
 
-      printf("lineal velocity for wheel right:%i \n",x);
-      printf("lineal velocity for wheel left:%lf\n",encoder2_value);
+      encoder2_value=wb_position_sensor_get_value(encoder_2);
+      printf("Distance sensor:%lf\n",ds_value);
+      encoder1_value=(encoder2_value/(2*PI))*0.15*PI;
+      encoder2_value=(encoder2_value/(2*PI))*0.15*PI;
+
+      printf("lineal velocity for wheel right:%lf \n",encoder2_value);
+      printf("lineal velocity for wheel left:%lf\n",encoder1_value);
 
 
 
@@ -104,7 +105,6 @@
       * wb_differential_wheels_set_speed(100.0,100.0);
       */
      KEY=wb_keyboard_get_key();
-
      switch (KEY) {
         case WB_KEYBOARD_LEFT:{
 
@@ -118,16 +118,18 @@
         }
         break;
         case WB_KEYBOARD_UP:{
-          new_velocity++;
-          L_key=new_velocity;
-          R_key=new_velocity;
+          L_key=(VMAX/(DW*PI)*2*PI);
+          R_key=(VMAX/(DW*PI)*2*PI);
+          y=0;
+          x=1;
 
         }
         break;
         case WB_KEYBOARD_DOWN:{
-          new_velocity--;
-          L_key=new_velocity;
-          R_key=new_velocity;
+          L_key=(VLOW/(DW*PI)*2*PI);
+          R_key=(VLOW/(DW*PI)*2*PI);
+          x=0;
+          y=1;
 
 
         }
@@ -136,17 +138,32 @@
       }
 
 
-     if (KEY==-1) {
-       R_key=new_velocity;
-       L_key=new_velocity;
-      }
+      if (KEY==-1) {
+   if (x==1) {
+     L_key=VMAX;
+     R_key=VMAX;
+     new_velocity=VMAX;
+   }
+   else if (y==1) {
+     L_key=VLOW;
+     R_key=VLOW;
+     new_velocity=VLOW;
+   }
+   else {
+     L_key=VELOCITY;
+     R_key=VELOCITY;
+     new_velocity=VELOCITY;
+   }
+ }
+
 
 
       //printf("valor rueda derecha = %f \n",R_key);
       //printf("valor rueda izquierda = %f \n",L_key);
       //printf("valor key = %i \n",KEY);
-      wb_motor_set_velocity(wheel_right,R_key);
-      wb_motor_set_velocity(wheel_left,L_key);
+
+    wb_motor_set_velocity(wheel_right,R_key);
+    wb_motor_set_velocity(wheel_left,L_key);
    };
 
    /* Enter your cleanup code here */
